@@ -1,5 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-name: Docker Second Image 
+name: Docker Image 
 
 on:
 # Triggers the workflow on push or pull request events but only for the branch
@@ -16,16 +16,22 @@ jobs:
     
    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it where checkout: repo and tag : v2
     - uses: actions/checkout@v2
     
-     # Runs a single command using the runners shell
+     # Runs a single command using the runners shell (example)
     - name: Run a one-line script
       run: echo Hello, world!
       
     # Runs a set of commands using the runners shell
-      
-    - name: Build the Docker second image
+     
+    
+    # Step 1: - Define that we will trigger a job after all pushes to master branch.
+    # Step 2:- Configures a single job called “build” to run on an Ubuntu machine.
+    # Step 3:- The source code repository will be checked out and will run three inline commands: 1.docker login 2. docker build 3. docker push. These will use our secrets we saved off earlier.
+    # Step 4:- Note that the example uses the commit sha as the image tag — GitHub Actions makes the sha available in an environment variable called GITHUB_SHA. Of course, you could stick with “latest” like we did in the first example should you wish to do so. 
+    
+    - name: Build the custom Docker image using Secrets 
       run: |
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin docker.io
         docker build . --file Dockerfile --tag docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:$GITHUB_SHA
