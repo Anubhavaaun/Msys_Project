@@ -1,7 +1,7 @@
 // Declarative //
 pipeline {
 environment {
-registry = "anuaaunbhav/docker_pipeline"
+registry = "anuaaunbhav/docker-pipeline"
 registryCredential = 'dockerhub_id'
 dockerImage = ''
 }
