@@ -1,34 +1,37 @@
 // Declarative //
 pipeline {
-    agent any
-
-    stages {
-        stage('Building the image') {
-            steps {
-                echo 'Building..'
-            }
-        }
-        stage('Testing the image') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy the image ') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
-    }
+environment {
+registry = "anuaaunbhav/docker_pipeline"
+registryCredential = 'dockerhub_id'
+dockerImage = ''
 }
-// Script //
-node {
-    stage('Build') {
-        echo 'Building....'
-    }
-    stage('Testing') {
-        echo 'Building....'
-    }
-    stage('Deploy') {
-        echo 'Deploying....'
-    }
+agent any
+stages {
+stage('Cloning our Git') {
+steps {
+git 'https://github.com/Anubhavaaun/Msys_Project.git'
+}
+}
+stage('Building our image') {
+steps{
+script {
+dockerImage = docker.build registry + ":$BUILD_NUMBER"
+}
+}
+}
+stage('Deploy our image') {
+steps{
+script {
+docker.withRegistry( '', registryCredential ) {
+dockerImage.push()
+}
+}
+}
+}
+stage('Cleaning up') {
+steps{
+sh "docker rmi $registry:$BUILD_NUMBER"
+}
+}
+}
 }
