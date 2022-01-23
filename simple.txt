@@ -1,6 +1,6 @@
-Created a sample text file for output on Jenkins 
+created a sample text file for output on Jenkins 
 Done with the first part
 Created second job 
 Deleted the second job and image deployed to the dockerhub
 Webhook didnt work
-
+New Branch was created to push to feature branch 
